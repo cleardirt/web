@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布式布局</title>
+    <link rel="stylesheet" href="public/css/css.css">
+</head>
+
+<body>
+<div class="total_box">
+    <a id="login_a" class="S" href="LogIn.html" >登录/注册</a>
+    <div class="title">十亿双割破的眼皮底</div>
+    <div class="title">我敬候你的佳音</div>
+        <div class="flex_box">
+            <div class="waterfall">
+                <div class="item_box">
+                    <a href="watermark.html">
+                    <img class="item" src="./public/images/16.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/2.jpg">
+                        <img class="item" src="./public/images/2.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/3.jpg">
+                        <img class="item" src="./public/images/3.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/10.jpg">
+                        <img class="item" src="./public/images/10.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/11.jpg">
+                        <img class="item" src="./public/images/11.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/17.jpg">
+                        <img class="item" src="./public/images/17.jpg">
+                    </a>
+                </div>
+            </div>
+            <div class="waterfall">
+                <div class="item_box">
+                    <a href="./public/images/4.jpg">
+                        <img class="item" src="./public/images/4.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/5.jpg">
+                        <img class="item" src="./public/images/5.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/6.jpg">
+                        <img class="item" src="./public/images/6.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/12.jpg">
+                        <img class="item" src="./public/images/12.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/13.jpg">
+                        <img class="item" src="./public/images/13.jpg">
+                    </a>
+                </div>
+            </div>
+            <div class="waterfall">
+                <div class="item_box">
+                    <a href="./public/images/7.jpg">
+                        <img class="item" src="./public/images/7.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/8.jpg">
+                        <img class="item" src="./public/images/8.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/9.jpg">
+                        <img class="item" src="./public/images/9.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/14.jpg">
+                        <img class="item" src="./public/images/14.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/15.jpg">
+                        <img class="item" src="./public/images/15.jpg">
+                    </a>
+                </div>
+                <div class="item_box">
+                    <a href="./public/images/1.jpg">
+                        <img class="item" src="./public/images/1.jpg">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    window.onload =function () {
+        var url = location.search //获取url中"?"符后的字串 ('?modFlag=business&role=1')
+        var theRequest = {}
+        if (url.indexOf('?') !== -1) {
+            var str = url.substr(1) //substr()方法返回从参数值开始到结束的字符串；
+            var strs = str.split('&')
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1]
+            }
+            if(theRequest["b"]==="login"){
+                document.getElementById("login_a").innerText =theRequest["a"]+"已登录";
+            }
+        }
+    }
+</script>

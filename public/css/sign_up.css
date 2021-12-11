@@ -1,0 +1,141 @@
+
+body{
+    background:url(../images/wallhaven-3kgkk3.jpg) 0 0;
+    /*background-color:#063f44;*/
+    /*background-color: #122c50;*/
+    font-family: 'Open Sans', sans-serif;
+    background-size:cover;
+    min-height:100%;
+}
+h1 {
+    font-family: 'Exo 2', sans-serif;
+    text-align: center;
+    padding-top: 2em;
+    font-weight: 400;
+    font-size: 2em;
+    color: white;
+}
+.signin{
+    display:flex;
+}
+.login-form {
+    background: rgba(43, 43, 54, 0.95);
+    left:35%;
+    position: fixed;
+    width: 30%;
+    margin: 6% auto 10% auto;
+    text-align: center;
+    border-radius: 15px;
+}
+input[id="name"] {
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #9199aa;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/adm.png) no-repeat 10px 15px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856;
+    margin-top: 2em;
+}
+input[value="Email"] {
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #9199aa;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/adm.png) no-repeat 10px 15px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856;
+}
+input[type="password"]{
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #dd3e3e;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/key.png) no-repeat 10px 23px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856
+}
+input[id="confirm_password"]{
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #dd3e3e;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/key.png) no-repeat 10px 23px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856
+}
+.submit{
+    font-size: 30px;
+    color: #fff;
+    outline: none;
+    border: none;
+    background: rgba(62, 167, 81, 0.95);
+    width: 100%;
+    padding: 18px 0;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    cursor: pointer;
+}
+.submit:hover {
+    background: rgba(255, 39, 117, 0.95);
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    transition: 1s all;
+    -webkit-transition: 1s all;
+    -moz-transition: 1s all;
+    -o-transition: 1s all;
+}
+/*密码强度样式*/
+#reg .info_pass {
+    width: 150px;
+    height: 34px;
+    padding: 4px 0 0 16px;
+    top: 5px;
+    left: 295px;
+    letter-spacing: 0;
+    display: none;
+    color: #fff;
+}
+#reg .info_pass p {
+    height:10px;
+    line-height:10px;
+    color:#666;
+}
+#reg .info_pass p strong.s {
+    color:#ccc;
+}
+.yan{
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #9199aa;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/key.png) no-repeat 10px 15px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856;
+}
+#code{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom:20px;
+    font-family: Arial, 宋体, serif;
+    font-style:italic;
+    color:green;
+    border:0;
+
+    font-size:15px;
+    padding:20px 80px;
+    letter-spacing:3px;
+    font-weight:bolder;
+    border-bottom: 1px solid#484856;
+    border-radius:15px;
+}

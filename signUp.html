@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="public/css/sign_up.css" rel='stylesheet' type='text/css' />
+</head>
+<body>
+<!--SIGN UP-->
+
+<div class="login-form">
+
+    <h1>Sign up</h1>
+    <form>
+        <input type="text" id="name" class="text" value="Username" onfocus="this.value = '';" onblur="if (this.value === '') {this.value = 'Username';}" >
+        <input type="password" id="pwd"  value="Password" onfocus="this.value = '';">
+        <div class="info_pass">
+            <p>
+                安全级别：<strong class="s1">■</strong>
+                <strong class="s2">■</strong>
+                <strong class="s3">■</strong>
+                <strong class="s4" style="font-weight:normal"></strong>
+            </p>
+            <p>
+                <strong class="q1" style="font-weight:normal">○</strong> 6-20 个字符
+            </p>
+            <p>
+                <strong class="q2" style="font-weight:normal">○</strong>只能包含大小写字母、数字、非空字符
+            </p>
+        </div>
+        <input type="text" value="请再次输入密码" id="confirm_password" onfocus="this.value = '';this.type='password'" onblur="if (this.value === 'Confirm password') {this.type='text';}">
+        <div class="verificationBox">
+            <input type = "text" class="yan" id="input" value="请输入验证码" onfocus="this.value = '';"/>
+        </div>
+        <input type="button" id="code" onclick="createCode()" style="width:150px;text-align:center; line-height:20px; height:40px; margin-top:20px; padding:0; border:0;" value='点击更换验证码' />
+    </form>
+    <button onclick="submit()" class="submit" >sign up</button>
+</div>
+
+</body>
+</html>
+<script src="public/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#pwd').bind('focus', focus);
+        $('#pwd').bind('blur', blur);
+        $('#pwd').bind('keyup', keyup);
+    })
+
+    //密码框获焦点，密码强度显示
+    function focus() {
+        $('.info_pass').css('display', 'block');
+    };
+    //密码框取消焦点
+    function blur() {
+        pwd = document.getElementById("pwd").value.trim()
+        //如果密码为空，隐藏
+        if (pwd === "") {
+            $('.info_pass').css('display', 'none');
+        } else {
+            //如果密码强度验证通过，隐藏
+            if (keyup()) {
+                $('.info_pass').css('display', 'none');
+            } else {
+                $('.info_pass').css('display', 'none');
+            }
+        }
+    };
+    //表单验证 -- 密码强度验证
+
+    function keyup() {
+        var flag = false;
+        var value = document.getElementById("pwd").value.trim();
+        var value_length = value.length;
+        var code_length = 0;
+
+
+        //6-20位字符验证
+        if (value_length >= 6 && value_length <= 20) {
+            $('.q1').html('●').css('color', 'green');
+        } else {
+            $('.q1').html('○').css('color', '#666');
+        }
+
+        if (/[0-9]/.test(value)) {
+            code_length++;
+        }
+        if (/[a-z]/.test(value)) {
+            code_length++;
+        }
+        if (/[A-Z]/.test(value)) {
+            code_length++;
+        }
+
+        //密码是否包含除数字和字母之外的字符
+        if (value_length > 0 && !/\s/.test(value) && !/[^a-zA-Z0-9]/.test(value) && code_length >= 2) {
+            $('.q2').html('●').css('color', 'green');
+        } else {
+            $('.q2').html('○').css('color', '#666');
+        }
+
+
+        //安全级别
+        if (code_length >= 2 && value_length >= 15 && ($('.q2').html()) === '●' && ($('.q1').html()) === '●') {
+            $('.s1').css('color', 'green');
+            $('.s2').css('color', 'green');
+            $('.s3').css('color', 'green');
+            $('.s4').html('高').css('color', 'green');
+        } else if (code_length >= 2 && value_length >= 10 && ($('.q2').html()) === '●' && ($('.q1').html()) === '●') {
+            $('.s1').css('color', '#f60');
+            $('.s2').css('color', '#f60');
+            $('.s3').css('color', '#ccc');
+            $('.s4').html('中').css('color', '#f60');
+        } else if (code_length >= 2 && value_length >= 6 && ($('.q2').html()) === '●' && ($('.q1').html()) === '●') {
+            $('.s1').css('color', 'maroon');
+            $('.s2').css('color', '#ccc');
+            $('.s3').css('color', '#ccc');
+            $('.s4').html('低').css('color', 'maroon');
+        } else {
+            $('.s1').css('color', '#ccc');
+            $('.s2').css('color', '#ccc');
+            $('.s3').css('color', '#ccc');
+            $('.s4').html(' ').css('color', '#ccc');
+        }
+        if (value_length >= 6 && value_length <= 20 && code_length >= 2) flag = true;
+        return flag;
+    }
+
+//safe strong
+    var code ; //在全局定义验证码
+
+    function createCode(){
+        code = "";
+        var codeLength = 4;//验证码的长度
+        var checkCode = document.getElementById("code");
+        var random = [0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
+            'S','T','U','V','W','X','Y','Z'];//随机数
+        for(var i = 0; i < codeLength; i++) {//循环操作
+            var index = Math.floor(Math.random()*36);//取得随机数的索引（0~35）
+            code += random[index];//根据索引取得随机数加到code上
+        }
+        checkCode.value = code;//把code值赋给验证码
+        checkCode.style.fontSize=25+"px";
+    }
+//yan zheng ma
+    function submit() {
+        var name = $("#name")
+            .val()
+            .trim();
+        var pwd = $("#pwd")
+            .val()
+            .trim();
+        var inputCode_value = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写
+        var confirm_pwd_value=document.getElementById("confirm_password").value;
+        var first_pwd_value=document.getElementById("pwd").value;
+        var confirm_pwd=document.getElementById("confirm_password");
+        var first_pwd=document.getElementById("pwd");
+        var inputCode = document.getElementById("input")
+        var username=document.getElementById("name")
+        var username_value=username.value;
+        console.log(confirm_pwd_value.length)
+        if (first_pwd_value.length<=0) {
+            first_pwd.style.borderBottom = "1px solid#dd3e3e"
+            first_pwd.value="请输入密码";
+        }
+        else if(username_value.length<=0){
+            username.style.borderBottom="1px solid#dd3e3e"
+            username.value="请输入用户名"
+        }
+        else if(confirm_pwd_value.length <= 0){
+            confirm_pwd.style.borderBottom = "1px solid#dd3e3e"
+            confirm_pwd.value = "请再次输入密码"
+        }
+        else {
+            if (confirm_pwd_value !== first_pwd_value) {
+                confirm_pwd.style.borderBottom = "1px solid#dd3e3e"
+                first_pwd.style.borderBottom = "1px solid#dd3e3e"
+                confirm_pwd.value = "different password"
+            } else {
+                confirm_pwd.style.borderBottom = "1px solid#484856"
+                first_pwd.style.borderBottom = "1px solid#484856"
+                if (inputCode_value.length <= 0) {
+                    inputCode.style.borderBottom = "1px solid#dd3e3e"//若输入的验证码长度为0
+                    inputCode.value = "请输入验证码"
+                    // alert("请输入验证码！"); //则弹出请输入验证码
+                } else if (inputCode_value !== code) { //若输入的验证码与产生的验证码不一致时
+                    inputCode.style.borderBottom = "1px solid#dd3e3e"
+                    inputCode.value = "验证码错误"
+                    // alert("验证码输入错误！@_@"); //则弹出验证码输入错误
+                    createCode();//刷新验证码
+                    document.getElementById("input").value = "";//清空文本框
+                } else { //输入正确时
+                    // alert("合格！^-^");
+                    $.ajax({
+                        async: false,
+                        url: "/signUp_process_post",
+                        type: "post",
+                        data: {
+                            userName: name,
+                            pwd: pwd
+                        },
+                        success: function (res) {
+                            console.log(res.code);
+                            if (res.code === 2) {
+                                alert("账号已存在");
+                            } else if (res.code === 3) {
+                                alert("注册成功，即将跳转登录界面");
+                                window.location.href = 'LogIn.html';
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+</script>

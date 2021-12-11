@@ -1,0 +1,91 @@
+
+body{
+    background:url(../images/wallhaven-3kgkk3.jpg)  0 0;
+    /*background-color:#063f44;*/
+    font-family: 'Open Sans', sans-serif;
+    background-size:cover;
+    min-height:100%;
+}
+h1 {
+    font-family: 'Exo 2', sans-serif;
+    text-align: center;
+    padding-top: 2em;
+    font-weight: 400;
+    font-size: 2em;
+    color: white;
+}
+.signin{
+    display:flex;
+}
+.login-form {
+    background: rgba(43, 43, 54, 0.95);
+    position: relative;
+    width: 30%;
+    margin: 15% auto 10% auto;
+    text-align: center;
+    border-radius: 15px;
+}
+input[type="text"] {
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #9199aa;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/adm.png) no-repeat 10px 15px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856;
+    margin-top: 2em;
+}
+input[type="password"]{
+    width: 70%;
+    padding: 1em 2em 1em 3em;
+    color: #dd3e3e;
+    font-size: 18px;
+    outline: none;
+    background: url(../images/key.png) no-repeat 10px 23px;
+    border: none;
+    font-weight: 100;
+    border-bottom: 1px solid#484856;
+    margin-bottom: 3em;
+}
+.submit{
+    font-size: 30px;
+    color: #fff;
+    outline: none;
+    border: none;
+    background: rgba(62, 167, 81, 0.95);
+    width: 100%;
+    padding: 18px 0;
+    border-bottom-left-radius: 15px;
+    cursor: pointer;
+}
+.submit:hover {
+    background: rgba(255, 39, 117, 0.95);
+    border-bottom-left-radius: 15px;
+    transition: 1s all;
+    -webkit-transition: 1s all;
+    -moz-transition: 1s all;
+    -o-transition: 1s all;
+}
+.signup{
+    font-size: 30px;
+    color: #fff;
+    outline: none;
+    border: none;
+    background: rgba(62, 167, 81, 0.95);
+    width: 100%;
+    padding: 18px 0;
+    border-bottom-right-radius: 15px;
+    cursor: pointer;
+    text-decoration:none
+}
+.signup:hover {
+    background: rgba(255, 39, 117, 0.95);
+    border-bottom-right-radius: 15px;
+    transition: 1s all;
+    -webkit-transition: 1s all;
+    -moz-transition: 1s all;
+    -o-transition: 1s all;
+    text-decoration:none
+}
