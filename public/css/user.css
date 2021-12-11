@@ -1,0 +1,26 @@
+body{
+    margin:0 auto;
+    padding:0;
+    background-color: #063f44;
+}
+.image{
+    margin-top:2%;
+    margin-left:40%;
+    width: 20%;
+    box-shadow: 2px 2px 5px #00000080;
+    transition-property: all;
+    transition-duration: 0.25s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+.information{
+    width:30%;
+    color:#CCCC99;
+    font-size:40px;
+    margin-top: 4%;
+    margin-left: 35%;
+
+}
+.image:hover{
+    filter:brightness(120%)
+    }

@@ -26,7 +26,9 @@ connection.connect(function(err) {                     //链接数据库
     }
     console.log('链接成功');    //否则链接成功
 });
-
+app.get('/user.html', function (req, res) {
+    res.sendFile( __dirname + "/" + "user.html" );
+})
 app.get('/index.html', function (req, res) {
     res.sendFile( __dirname + "/" + "index.html" );
 })
@@ -60,8 +62,8 @@ app.post('/signUp_process_post', function (req, res) {
     // 输出 JSON 格式
 
     var response = {
-        "first_name":req.body.userName,
-        "last_name":req.body.pwd
+        "username":req.body.userName,
+        "pwd":req.body.pwd
     };
     // console.log(req.body)
     console.log(response);

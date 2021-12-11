@@ -93,6 +93,9 @@ input[id="confirm_password"]{
     -moz-transition: 1s all;
     -o-transition: 1s all;
 }
+.info_pass{
+    color: #fff;
+}
 /*密码强度样式*/
 #reg .info_pass {
     width: 150px;
