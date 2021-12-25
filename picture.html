@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>picture</title>
+    <link rel="stylesheet" href="picture.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+</head>
+<body>
+  <img class="picture" src="public/images/1.jpg" id="img" alt=""/>
+  <canvas id="canvas_id" class="canvas"></canvas>
+    <textarea id="text_input"></textarea>
+  <div class="sliders">
+  <form id="reservation" class="slider">
+      <label for="minbeds_1">亮度</label>
+      <select name="minbeds_1" id="minbeds_1" class="select">
+      </select>
+  </form>
+  <form id="reservation_2" class="slider">
+      <label for="minbeds_2">饱和度</label>
+      <select name="minbeds_2" id="minbeds_2" class="select">
+      </select>
+  </form>
+  <form id="reservation_3" class="slider">
+      <label for="minbeds_3">对比度</label>
+      <select name="minbeds_3" id="minbeds_3" class="select">
+      </select>
+  </form>
+  <form id="reservation_4" class="slider">
+      <label for="minbeds_4">自然饱和度</label>
+      <select name="minbeds_4" id="minbeds_4" class="select">
+      </select>
+  </form>
+  <form id="reservation_5" class="slider">
+      <label for="minbeds_5">曝光度</label>
+      <select name="minbeds_5" id="minbeds_5" class="select">
+      </select>
+  </form>
+  <form id="reservation_6" class="slider">
+      <label for="minbeds_6">gamma值</label>
+      <select name="minbeds_6" id="minbeds_6" class="select">
+      </select>
+  </form>
+      <button onclick="set_filter(this.innerHTML)" class="filter_button">vignette</button>
+      <button onclick="set_filter(this.innerHTML)" class="filter_button">lomo</button>
+      <button onclick="set_filter(this.innerHTML)" class="filter_button">sinCity</button>
+      <button onclick="set_filter(this.innerHTML)" class="filter_button">pinhole</button>
+      <button onclick="reset_pic()" class="filter_button">reset</button>
+  </div>
+  <div class="form_get_text">
+      <input type="text" class="form_input" value=""/>
+      <button class="form_change" onclick="input_form()">更改样式</button>
+  </div>
+    <div class="form_button">
+        <button class="form_get" onclick="get_form()">提取样式</button>
+    </div>
+</body>
+</html>
+<!-- Use CDN -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/camanjs/4.0.0/caman.full.min.js"></script>
+<!-- From a local copy -->
+<script type="text/javascript">
+    var img = document.getElementById("img");
+    var slier_1_t;
+    let isVintage=0,isLomo=0,isSinCity=0,isPinhole=0;
+    let br = 0;//亮度
+    let co = 0;//对比度
+    let st = 0;//饱和度
+    let ex = 0;//曝光度
+    let vi = 0;//自然饱和度
+    let ga = 1;//gamma
+    let form_num=0;
+    let varNum=10;
+    window.onload =function () {
+        for (var j=1;j<=5;j++) {
+            var selector = document.getElementById("minbeds_"+j)
+            for (var i = -100; i <= 100; i++) {
+                var option = new Option();
+                option.id=j+"";
+                option.value = i + "";
+                option.innerHTML = i + "";
+                selector.appendChild(option);
+            }
+        }
+        var selector_gamma = document.getElementById("minbeds_6")
+        for (var i = 0; i <= 100; i++) {
+            var option = new Option();
+            option.id=6+"";
+            option.value = i/10 + "";
+            option.innerHTML = i/10 + "";
+            selector_gamma.appendChild(option);
+        }
+      var url = location.search //获取url中"?"符后的字串
+      var imgSrc = "";
+      var img = document.getElementById("img");
+      if (url.indexOf('?') !== -1) {
+          //substr()方法返回从参数值开始到结束的字符串；
+          imgSrc = url.substr(url.indexOf('?') + 5);
+          if (imgSrc.length > 0) {
+              img.src = "public/images/" + imgSrc;
+              var ctx = document.getElementById("canvas_id");
+              if (document.getElementById("img").width > document.getElementById("img").height) {
+                  ctx.setAttribute("width", img.width * 2 + "")
+                  ctx.setAttribute("height", img.height * 2 + "")
+                  ctx.setAttribute("marginLeft", "20%")
+                  ctx.setAttribute("marginTop", "5%")
+                  ctx.style.marginTop="5%";
+                  ctx.style.left = "20%";
+              } else {
+                  ctx.style.marginTop="3.5%";
+                  ctx.setAttribute("marginTop", "4%")
+                  ctx.setAttribute("width", img.width + "")
+                  ctx.setAttribute("height", img.height + "")
+              }
+              img.remove()
+              var canvas = ctx.getContext("2d")
+              img.onload = function () {
+                  canvas.drawImage(img, 0, 0, ctx.width, ctx.height)
+              }
+          }
+      }
+        $(document).ready(function (e){
+            $("option[value='0']").attr("selected",true);
+            $("option[value='0'][id='6']").attr("selected",false);
+            $("option[value='1'][id='6']").attr("selected",true);
+            // $( "#minbeds_6" ).trigger("change_select",10);
+
+        });
+        //亮度
+        $( function() {
+            var select = $( "#minbeds_1" );
+            var slider = $( "<div id='slider_1' class='slider_1'></div>" ).insertAfter( select ).slider({
+                min: 1,
+                max: 201,
+                range: "0",
+                value: 100,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                },
+                stop: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                    br=ui.value - 1 -100;
+                    Caman("#canvas_id",img,function(){
+                        if (isVintage)
+                            this.vignette(400);
+                        else if(isLomo)
+                            this.lomo();
+                        else if(isSinCity)
+                            this.sinCity();
+                        else if(isPinhole)
+                            this.pinhole();
+                        else {
+                            this.gamma(ga)
+                            this.vibrance(vi)
+                            this.exposure(ex)
+                            this.contrast(co)
+                            this.saturation(st)
+                        }
+                        this.brightness(br).render();
+                        this.revert(false);
+                    });
+                }
+            });
+            slider.bind("change_bright",function (e, number) {
+                slider.slider( "value", number );
+            })
+            $( "#minbeds_1" ).bind("change_select",function(e,number){
+                select[ 0 ].selectedIndex = number;
+            })
+            $( "#minbeds_1" ).on( "change", function() {
+                var br=this.selectedIndex -100 + 1;
+                slier_1_t=slider;
+                slider.slider( "value", this.selectedIndex + 1 );
+                Caman("#canvas_id",img,function(){
+                    if (isVintage)
+                        this.vignette(400);
+                    else if(isLomo)
+                        this.lomo();
+                    else if(isSinCity)
+                        this.sinCity();
+                    else if(isPinhole)
+                        this.pinhole();
+                    else {
+                        this.gamma(ga)
+                        this.vibrance(vi)
+                        this.exposure(ex)
+                        this.contrast(co)
+                        this.saturation(st)
+                    }
+                    this.gamma(ga)
+                    this.vibrance(vi)
+                    this.exposure(ex)
+                    this.contrast(co)
+                    this.saturation(st)
+                    this.brightness(br).render();
+                    this.revert(false);
+                });
+
+            });
+        } );
+        //饱和度
+        $( function() {
+            var select = $( "#minbeds_2" );
+            var slider = $( "<div id='slider_2' class='slider_2'></div>" ).insertAfter( select ).slider({
+                min: 1,
+                max: 201,
+                range: "0",
+                value: 100,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                },
+                stop: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                    st=ui.value - 1 -100;
+                    Caman("#canvas_id",img,function(){
+                        if (isVintage)
+                            this.vignette(400);
+                        else if(isLomo)
+                            this.lomo();
+                        else if(isSinCity)
+                            this.sinCity();
+                        else if(isPinhole)
+                            this.pinhole();
+                        else {
+                            this.gamma(ga)
+                            this.vibrance(vi)
+                            this.exposure(ex)
+                            this.contrast(co)
+                            this.brightness(br)
+                        }
+                        this.saturation(st).render();
+                        this.revert(false);
+                    });
+                }
+            });
+            slider.bind("change_saturation",function (e, number) {
+                slider.slider( "value", number );
+            })
+            $( "#minbeds_2" ).bind("change_select",function(e,number){
+                select[ 0 ].selectedIndex = number;
+            })
+            $( "#minbeds_2" ).on( "change", function() {
+                st=this.selectedIndex -100;
+                slider.slider( "value", this.selectedIndex + 1 );
+                Caman("#canvas_id",img,function(){
+                    if (isVintage)
+                        this.vignette(400);
+                    else if(isLomo)
+                        this.lomo();
+                    else if(isSinCity)
+                        this.sinCity();
+                    else if(isPinhole)
+                        this.pinhole();
+                    else {
+                        this.gamma(ga)
+                        this.vibrance(vi)
+                        this.exposure(ex)
+                        this.contrast(co)
+                        this.brightness(br)
+                    }
+                    this.saturation(st).render();
+                    this.revert(false);
+                });
+            });
+        } );
+        //对比度
+        $( function() {
+            var select = $( "#minbeds_3" );
+            var slider = $( "<div id='slider_3' class='slider_3'></div>" ).insertAfter( select ).slider({
+                min: 1,
+                max: 201,
+                range: "0",
+                value: 100,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                },
+                stop: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                    co=ui.value - 1 -100;
+                    Caman("#canvas_id",img,function(){
+                        if (isVintage)
+                            this.vignette(400);
+                        else if(isLomo)
+                            this.lomo();
+                        else if(isSinCity)
+                            this.sinCity();
+                        else if(isPinhole)
+                            this.pinhole();
+                        else {
+                            this.gamma(ga)
+                            this.vibrance(vi)
+                            this.exposure(ex)
+                            this.brightness(br)
+                            this.saturation(st)
+                        }
+                        this.contrast(co).render();
+                        this.revert(false);
+                    });
+                }
+            });
+            slider.bind("change_contrast",function (e, number) {
+                slider.slider( "value", number );
+            })
+            $( "#minbeds_3" ).bind("change_select",function(e,number){
+                select[ 0 ].selectedIndex = number;
+            })
+            $( "#minbeds_3" ).on( "change", function() {
+                co=this.selectedIndex -100;
+                slider.slider( "value", this.selectedIndex + 1 );
+                Caman("#canvas_id",img,function(){
+                    if (isVintage)
+                        this.vignette(400);
+                    else if(isLomo)
+                        this.lomo();
+                    else if(isSinCity)
+                        this.sinCity();
+                    else if(isPinhole)
+                        this.pinhole();
+                    else {
+                        this.gamma(ga)
+                        this.vibrance(vi)
+                        this.exposure(ex)
+                        this.brightness(br)
+                        this.saturation(st)
+                    }
+                    this.contrast(co).render();
+                    this.revert(false);
+                });
+            });
+        } );
+        //自然饱和度
+        $( function() {
+            var select = $( "#minbeds_4" );
+            var slider = $( "<div id='slider_4' class='slider_4'></div>" ).insertAfter( select ).slider({
+                min: 1,
+                max: 201,
+                range: "0",
+                value: 100,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                },
+                stop: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                    vi=ui.value - 1 -100;
+                    Caman("#canvas_id",img,function(){
+                        if (isVintage)
+                            this.vignette(400);
+                        else if(isLomo)
+                            this.lomo();
+                        else if(isSinCity)
+                            this.sinCity();
+                        else if(isPinhole)
+                            this.pinhole();
+                        else {
+                            this.gamma(ga)
+                            this.exposure(ex)
+                            this.contrast(co)
+                            this.brightness(br)
+                            this.saturation(st)
+                        }
+                        this.vibrance(vi).render();
+                        this.revert(false);
+                    });
+                }
+            });
+            slider.bind("change_vibrance",function (e, number) {
+                slider.slider( "value", number );
+            })
+            $( "#minbeds_4" ).bind("change_select",function(e,number){
+                select[ 0 ].selectedIndex = number;
+            })
+            $( "#minbeds_4" ).on( "change", function() {
+                vi=this.selectedIndex -100;
+                slider.slider( "value", this.selectedIndex + 1 );
+                Caman("#canvas_id",img,function(){
+                    if (isVintage)
+                        this.vignette(400);
+                    else if(isLomo)
+                        this.lomo();
+                    else if(isSinCity)
+                        this.sinCity();
+                    else if(isPinhole)
+                        this.pinhole();
+                    else {
+                        this.gamma(ga)
+                        this.exposure(ex)
+                        this.contrast(co)
+                        this.brightness(br)
+                        this.saturation(st)
+                    }
+                    this.vibrance(vi).render();
+                    this.revert(false);
+                });
+            });
+        } );
+        //曝光
+        $( function() {
+            var select = $( "#minbeds_5" );
+            var slider = $( "<div id='slider_5' class='slider_5'></div>" ).insertAfter( select ).slider({
+                min: 1,
+                max: 201,
+                range: "0",
+                value: 100,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                },
+                stop: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                    ex=ui.value - 1 -100;
+                    Caman("#canvas_id",img,function(){
+                        if (isVintage)
+                            this.vignette(400);
+                        else if(isLomo)
+                            this.lomo();
+                        else if(isSinCity)
+                            this.sinCity();
+                        else if(isPinhole)
+                            this.pinhole();
+                        else {
+                            this.gamma(ga)
+                            this.vibrance(vi)
+                            this.contrast(co)
+                            this.brightness(br)
+                            this.saturation(st)
+                        }
+                        this.exposure(ex).render();
+                        this.revert(false);
+                    });
+                }
+            });
+            slider.bind("change_exposure",function (e, number) {
+                slider.slider( "value", number );
+            })
+            $( "#minbeds_5" ).bind("change_select",function(e,number){
+                select[ 0 ].selectedIndex = number;
+            })
+            $( "#minbeds_5" ).on( "change", function() {
+                ex=this.selectedIndex -100;
+                slider.slider( "value", this.selectedIndex + 1 );
+                Caman("#canvas_id",img,function(){
+                    if (isVintage)
+                        this.vignette(400);
+                    else if(isLomo)
+                        this.lomo();
+                    else if(isSinCity)
+                        this.sinCity();
+                    else if(isPinhole)
+                        this.pinhole();
+                    else {
+                        this.gamma(ga)
+                        this.vibrance(vi)
+                        this.contrast(co)
+                        this.brightness(br)
+                        this.saturation(st)
+                    }
+                    this.exposure(ex).render();
+                    this.revert(false);
+                });
+            });
+        } );
+        //gamma
+        $( function() {
+            var select = $( "#minbeds_6" );
+            var slider = $( "<div id='slider_6' class='slider_6'></div>" ).insertAfter( select ).slider({
+                min: 1,
+                max: 101,
+                range: "0",
+                value: 10,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                },
+                stop: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                    ga=ui.value - 1 / 10;
+                    Caman("#canvas_id",img,function(){
+                        if (isVintage)
+                            this.vignette(400);
+                        else if(isLomo)
+                            this.lomo();
+                        else if(isSinCity)
+                            this.sinCity();
+                        else if(isPinhole)
+                            this.pinhole();
+                        else {
+                            this.vibrance(vi)
+                            this.contrast(co)
+                            this.brightness(br)
+                            this.saturation(st)
+                            this.exposure(ex);
+                        }
+                            this.gamma(ga).render();
+                            this.revert(false);
+
+                    });
+                }
+            });
+            $( "#minbeds_6" ).bind("change_select",function(e,number){
+                select[ 0 ].selectedIndex = number;
+            })
+            slider.bind("change_gamma",function (e, number) {
+                slider.slider( "value", number );
+            })
+            $( "#minbeds_6" ).on( "change", function() {
+                ex=this.selectedIndex -100;
+                slider.slider( "value", this.selectedIndex + 1 );
+                Caman("#canvas_id",img,function(){
+                    if (isVintage)
+                        this.vignette(400);
+                    else if(isLomo)
+                        this.lomo();
+                    else if(isSinCity)
+                        this.sinCity();
+                    else if(isPinhole)
+                        this.pinhole();
+                    else {
+                        this.vibrance(vi)
+                        this.contrast(co)
+                        this.brightness(br)
+                        this.saturation(st)
+                        this.exposure(ex);
+                    }
+                    this.gamma(ga).render();
+                    this.revert(false);
+                });
+            });
+        } );
+  }
+  function get_form() {
+      let s="brightness="+br+";"
+          +"saturation="+st+";"
+          +"contrast="+co+";"
+          +"vibrance="+vi+";"
+          +"exposure="+ex+";"
+          +"gamma="+ga+";"
+          +"isVintage="+isVintage+";"
+          +"isSinCity="+isSinCity+";"
+          +"isLomo="+isLomo+";"
+          +"isPinhole="+isPinhole+";"
+      // s=$.parseHTML( s )
+      form_num++;
+      $( "<input type='button' class='form_get' onclick='form_set(value,0)' "+"id='form_"+form_num+"'"+"value='" + "           样式"+form_num+"                "+s+"'" + "/" + ">" ).appendTo( $( ".form_button" ))
+      // $( ".form_get" ).innerHTML=s
+      // var n=a;
+  }
+  function input_form(){
+        form_set($(".form_input").val(),1)
+  }
+  function form_set(s,mode) {
+        let start=0;
+        let t=0;
+        let j=0;
+        for(var i=0;i<s.length;i++){
+          if(s.charAt(i)!==' ') {
+              j = i;
+              break;
+          }
+        }
+
+      let arr=s.substring(start).split(";");
+      if(mode!==1){
+          for(i=j;i<s.length;i++){
+              let a=s.charAt(i)
+              if (s.charAt(i)===' '&&t===0)
+                  t=1;
+              else if(s.charAt(i)!==' '&&t===1) {
+                  start = i;
+                  break;
+              }
+          }
+          let a=document.getElementById("text_input")
+          a.value=s.substring(start);
+          a.select()
+          document.execCommand("copy")
+        }
+      else{
+          arr=s.split(";");
+          if(arr.length!==varNum+1) {
+              alert("格式错误，请重新输入");
+              return;
+          }
+      }
+        for(var i=0;i<arr.length;i++){
+            arr[i]=arr[i].split("=")[1];
+            if (parseInt(arr[i])<-100||arr[i]>100) {
+                alert("格式错误，请重新输入");
+                return;
+            }
+            if (i===5&&(arr[i]<0||arr[i]>10)){
+                alert("格式错误，请重新输入");
+                return;
+            }
+        }
+      // let s="brightness="+br+";"
+      //     +"saturation="+st+";"
+      //     +"contrast="+co+";"
+      //     +"vibrance="+vi+";"
+      //     +"exposure="+ex+";"
+      //     +"gamma="+ga+";"
+      //     +"isVintage="+isVintage+";"
+      //     +"isSinCity="+isSinCity+";"
+      //     +"isLomo="+isLomo+";"
+      //     +"isPinhole="+isPinhole+";"
+        br=parseInt(arr[0]);
+        st=parseInt(arr[1]);
+        co=parseInt(arr[2]);
+        vi=parseInt(arr[3]);
+        ex=parseInt(arr[4]);
+        ga=parseFloat(arr[5]);
+        isVintage=parseInt(arr[6]);
+        isSinCity=parseInt(arr[7]);
+        isLomo=parseInt(arr[8]);
+        isPinhole=parseInt(arr[9]);
+      Caman("#canvas_id",img,function(){
+          if (br||st||co||vi||ex||ga||isVintage||isSinCity||isLomo||isPinhole) {
+              if (isVintage)
+                  this.vignette(400);
+              else if (isLomo)
+                  this.lomo();
+              else if (isSinCity)
+                  this.sinCity();
+              else if (isPinhole)
+                  this.pinhole();
+              this.vibrance(vi)
+              this.contrast(co)
+              this.brightness(br)
+              this.saturation(st)
+              this.exposure(ex);
+              this.gamma(ga)
+              this.render();
+              this.revert(false);
+          }
+      });
+      $( "#minbeds_1" ).trigger("change_select",br+100);
+      $( "#minbeds_2" ).trigger("change_select",st+100);
+      $( "#minbeds_3" ).trigger("change_select",co+100);
+      $( "#minbeds_4" ).trigger("change_select",vi+100);
+      $( "#minbeds_5" ).trigger("change_select",ex+100);
+      $( "#minbeds_6" ).trigger("change_select",parseInt(ga*10));
+      $( ".slider_1" ).trigger("change_bright",br+100);
+      $( ".slider_2" ).trigger("change_saturation",st+100);
+      $( ".slider_3" ).trigger("change_contrast",co+100);
+      $( ".slider_4" ).trigger("change_vibrance",vi+100);
+      $( ".slider_5" ).trigger("change_exposure",ex+100);
+      $( ".slider_6" ).trigger("change_gamma",parseInt(ga*10));
+
+  }
+    // import Cropper from 'cropperjs';
+    function reset_pic() {
+        $("option[value='0'][id='1']").attr("selected", false);
+        $("option[value='0'][id='1']").attr("selected", true);
+        $("option[value='0'][id='5']").attr("selected", false);
+        $("option[value='0'][id='5']").attr("selected", true);
+        $("option[value='0'][id='2']").attr("selected", false);
+        $("option[value='0'][id='2']").attr("selected", true);
+        $("option[value='1'][id='6']").attr("selected", false);
+        $("option[value='1'][id='6']").attr("selected", true);
+        $("option[value='0'][id='3']").attr("selected", false);
+        $("option[value='0'][id='3']").attr("selected", true);
+        $("option[value='0'][id='4']").attr("selected", false);
+        $("option[value='0'][id='4']").attr("selected", true);
+        $( ".slider_1" ).trigger("change_bright",100);
+        $( ".slider_2" ).trigger("change_saturation",100);
+        $( ".slider_3" ).trigger("change_contrast",100);
+        $( ".slider_4" ).trigger("change_vibrance",100);
+        $( ".slider_5" ).trigger("change_exposure",100);
+        $( ".slider_6" ).trigger("change_gamma",10);
+        Caman("#canvas_id", img, function () {
+            this.revert();
+             br = 0;//亮度
+             co = 0;//对比度
+             st = 0;//饱和度
+             ex = 0;//曝光度
+             vi = 0;//自然饱和度
+             ga = 1;//gamma
+            isVintage=0;
+            isLomo=0;
+            isPinhole=0;
+            isSinCity=0;
+        })
+    }
+    function set_filter(innerHTML) {
+            var s = innerHTML
+            Caman("#canvas_id", img, function () {
+                switch (s) {
+                    case "vignette":
+                        this.vignette(400).render();
+                        $("option[value='5'][id='3']").attr("selected", false);
+                        $("option[value='5'][id='3']").attr("selected", true);
+                        $("option[value='0.8'][id='6']").attr("selected", false);
+                        $("option[value='0.8'][id='6']").attr("selected", true);
+                        $( ".slider_3" ).trigger("change_contrast",105);
+                        $( ".slider_6" ).trigger("change_gamma",8);
+                        co=5
+                        ga=0.87
+                        isVintage=1;
+                        isLomo=0;
+                        isPinhole=0;
+                        isSinCity=0;
+                        break;
+                    case "lomo":
+                        this.lomo().render();
+                        $("option[value='5'][id='1']").attr("selected", false);
+                        $("option[value='5'][id='1']").attr("selected", true);
+                        $("option[value='15'][id='5']").attr("selected", false);
+                        $("option[value='15'][id='5']").attr("selected", true);
+                        $("option[value='-20'][id='2']").attr("selected", false);
+                        $("option[value='-20'][id='2']").attr("selected", true);
+                        $("option[value='1.8'][id='6']").attr("selected", false);
+                        $("option[value='1.8'][id='6']").attr("selected", true);
+                        $( ".slider_1" ).trigger("change_bright",105);
+                        $( ".slider_2" ).trigger("change_saturation",80);
+                        $( ".slider_5" ).trigger("change_exposure",115);
+                        $( ".slider_6" ).trigger("change_gamma",18);
+                        br=5
+                        st=-20
+                        ex=15
+                        ga=1.8
+                        isVintage=0;
+                        isLomo=1;
+                        isPinhole=0;
+                        isSinCity=0;
+                        break;
+                    case "sinCity":
+                        this.sinCity().render();
+                        $("option[value='15'][id='1']").attr("selected", false);
+                        $("option[value='15'][id='1']").attr("selected", true);
+                        $("option[value='10'][id='5']").attr("selected", false);
+                        $("option[value='10'][id='5']").attr("selected", true);
+                        $("option[value='100'][id='3']").attr("selected", false);
+                        $("option[value='100'][id='3']").attr("selected", true);
+                        $( ".slider_1" ).trigger("change_bright",115);
+                        $( ".slider_5" ).trigger("change_exposure",110);
+                        $( ".slider_3" ).trigger("change_contrast",200);
+                        br=15;
+                        ex=10;
+                        co=100;
+                        isVintage=0;
+                        isLomo=0;
+                        isPinhole=0;
+                        isSinCity=1;
+                        break;
+                    case "pinhole":
+                        this.pinhole().render();
+                        $("option[value='15'][id='3']").attr("selected", false);
+                        $("option[value='15'][id='3']").attr("selected", true);
+                        $("option[value='10'][id='5']").attr("selected", false);
+                        $("option[value='10'][id='5']").attr("selected", true);
+                        $( ".slider_5" ).trigger("change_exposure",110);
+                        $( ".slider_3" ).trigger("change_contrast",115);
+                        ex=10;
+                        co=15;
+                        isVintage=0;
+                        isLomo=0;
+                        isPinhole=1;
+                        isSinCity=0;
+                        break;
+                }
+                this.revert(false);
+            });
+    }
+</script>

@@ -19,86 +19,86 @@
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/2.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/2.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/3.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/3.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/10.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/10.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/11.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/11.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/17.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/17.jpg">
                     </a>
                 </div>
             </div>
             <div class="waterfall">
                 <div class="item_box">
-                    <a href="./public/images/4.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/4.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/5.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/5.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/6.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/6.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/12.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/12.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/13.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/13.jpg">
                     </a>
                 </div>
             </div>
             <div class="waterfall">
                 <div class="item_box">
-                    <a href="./public/images/7.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/7.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/8.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/8.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/9.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/9.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/14.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/14.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/15.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/15.jpg">
                     </a>
                 </div>
                 <div class="item_box">
-                    <a href="./public/images/1.jpg">
+                    <a onclick="jump(this.innerHTML)">
                         <img class="item" src="./public/images/1.jpg">
                     </a>
                 </div>
@@ -122,5 +122,20 @@
                 document.getElementById("login_a").href="http://127.0.0.1:8081/user.html"
             }
         }
+    }
+    function jump(innerHTML) {
+        var a=innerHTML;
+        var imgID="";
+        var temp=0;
+        var end=0;
+        for (var i = 0; i < a.length; i++) {
+            if(a.charAt(i)==='/')
+                temp=i
+            if (a.charAt(i)==='"')
+                end=i;
+        }
+        imgID=a.substring(temp+1,end)
+        var s='http://localhost:63342/web/picture.html?img='+imgID;
+        window.location.href=s;
     }
 </script>

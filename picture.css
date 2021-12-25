@@ -1,0 +1,120 @@
+body{
+    margin:0 auto;
+    padding:0;
+    background-image: url(wallhaven-2kp2mg.jpg);
+    background-color: #063f44;
+    display: flex;
+}
+.picture{
+    width:30%;
+    margin-right:35%;
+    margin-top: 1%;
+    border-radius:15px;
+    box-shadow: 2px 2px 5px #00000080;
+}
+.canvas{
+    background-color: rgba(255, 255, 255, 0.7);
+    position:absolute;
+    left:35%;
+    border-radius:15px;
+    padding:20px;
+    box-shadow: 2px 2px 5px #00000080;
+}
+.sliders{
+    background-color: rgba(255, 255, 255, 0.7);
+    display:block;
+    top:5%;
+    position:absolute;
+    width:10%;
+    left:6%;
+    border-radius:15px;
+    box-shadow: 2px 2px 5px #00000080;
+}
+.slider{
+    color: #19273d;
+    margin-top:20%;
+}
+.filter_button{
+    font-size:18px;
+    border-radius:15px;
+    background-color: rgba(32, 32, 95, 0.8);
+    color: #eceab6;
+    width:90%;
+    height:20%;
+    margin-top:20%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.ui-slider{
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top:7%;
+}
+.select{
+    position:absolute;
+    right:5%;
+    margin-top:5%;
+}
+label{
+    margin-left: 5%;
+    font-size:12px;
+}
+.test_img{
+    width:20%;
+    display: block;
+    /* This rule is very important, please don't ignore this */
+    max-width: 100%;
+}
+.form_button{
+    background-color: rgba(255, 255, 255, 0.7);
+    top:5%;
+    width: 10%;
+    position: absolute;
+    right: 5%;
+    border-radius:15px;
+    box-shadow: 2px 2px 5px #00000080;
+}
+.form_get{
+    text-align: center;
+    font-size:18px;
+    border-radius:15px;
+    background-color: rgba(32, 32, 95, 0.8);
+    color: #eceab6;
+    width:90%;
+    height:20%;
+    margin: 10% 5%;
+}
+.filter_button{
+    margin-bottom: 5%;
+}
+.form_get_text{
+    display:inline;
+    border-radius:15px;
+    box-shadow: 2px 2px 5px #00000080;
+    width: 60%;
+    position:absolute;
+    right: 20%;
+    top: 1%;
+}
+.form_input{
+    margin-bottom: 1%;
+    margin-top: 1%;
+    margin-left: 5%;
+    font-size:18px;
+    border-radius:15px;
+    left: 25%;
+    width: 70%;
+    background-color:rgba(255, 255, 255, 0.7);
+}
+.form_change{
+    margin-left: 5%;
+    text-align: center;
+    font-size:18px;
+    border-radius:15px;
+    background-color: rgba(32, 32, 95, 0.8);
+    color: #eceab6;
+    width: 10%;
+}
+#text_input{
+    position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;
+}
